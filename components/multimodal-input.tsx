@@ -35,9 +35,19 @@ const suggestedActions = [
     action: 'What is the weather in San Francisco?',
   },
   {
-    title: 'Help me draft an essay',
-    label: 'about Silicon Valley',
-    action: 'Help me draft a short essay about Silicon Valley',
+    title: 'Help me draft an Itinerary for a trip to Bali',
+    label: 'about Bali Indonesia',
+    action: 'Help me draft an Itinerary for a trip to Bali',
+  },
+  {
+    title: 'Let us go to Lakshadweep',
+    label: 'about Lakshadweep India',
+    action: 'Help me draft an Itinerary for a trip to Lakshadweep India',
+  },
+  {
+    title: 'Do you want to go Dubai',
+    label: 'about Dubai, Saudi Arabia',
+    action: 'Help me create an itinerary for a trip to Dubai',
   },
 ];
 

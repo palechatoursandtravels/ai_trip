@@ -74,10 +74,18 @@ export function Chat({
 
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
 
+  
+
+  const lastAIMessage = messages
+  .filter(msg => msg.role === 'assistant')
+  .pop()?.content;
+
+
+
   return (
     <>
       <div className="flex flex-col min-w-0 h-dvh bg-background">
-        <ChatHeader selectedModelId={selectedModelId} />
+        <ChatHeader selectedModelId={selectedModelId} lastAIMessage={lastAIMessage} block={block} />
         <div
           ref={messagesContainerRef}
           className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4"
