@@ -2,7 +2,7 @@ import type { NextAuthConfig } from 'next-auth';
 
 export const authConfig = {
   pages: {
-    signIn: '/login',
+    signIn: '/landingPage',
     newUser: '/',
   },
   providers: [
@@ -12,9 +12,18 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
+      const isOnRoot = nextUrl.pathname === '/landingPage';
       const isOnChat = nextUrl.pathname.startsWith('/');
       const isOnRegister = nextUrl.pathname.startsWith('/register');
       const isOnLogin = nextUrl.pathname.startsWith('/login');
+
+      const isOnPrivacy = nextUrl.pathname === '/privacyPolicy';
+      const isOnTerms = nextUrl.pathname === '/termsConditions';
+
+      if (isOnPrivacy) return true;
+      if(isOnTerms) return true;
+
+      if (isOnRoot) return true; // Allow access to landing page
 
       if (isLoggedIn && (isOnLogin || isOnRegister)) {
         return Response.redirect(new URL('/', nextUrl as unknown as URL));

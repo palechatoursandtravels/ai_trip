@@ -13,6 +13,22 @@ const config: Config = {
       mono: ['geist-mono'],
     },
     extend: {
+       // Add custom scrollbar utilities
+       scrollbar: {
+        width: '8px',
+        track: {
+          backgroundColor: 'transparent',
+          borderRadius: '10px',
+        },
+        thumb: {
+          backgroundColor: '#0D9488',
+          borderRadius: '10px',
+          border: '2px solid transparent',
+        },
+        'thumb-hover': {
+          backgroundColor: '#0F766E',
+        }
+      },
       borderRadius: {
         lg: 'var(--radius)',
         md: 'calc(var(--radius) - 2px)',
@@ -70,8 +86,24 @@ const config: Config = {
           ring: 'hsl(var(--sidebar-ring))',
         },
       },
+      keyframes: {
+        "accordion-down": {
+          from: { height: '0' },
+          to: { height: "var(--radix-accordion-content-height)" },
+        },
+        "accordion-up": {
+          from: { height: "var(--radix-accordion-content-height)" },
+          to: { height: '0' },
+        },
+      },
+      animation: {
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
     },
   },
-  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],
+  plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography'), require('tailwind-scrollbar')],
 };
 export default config;
+
+

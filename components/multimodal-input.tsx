@@ -30,9 +30,9 @@ import { Textarea } from './ui/textarea';
 
 const suggestedActions = [
   {
-    title: 'What is the weather',
-    label: 'in San Francisco?',
-    action: 'What is the weather in San Francisco?',
+    title: 'Plan a trip to Thailand',
+    label: 'in Thaniland?',
+    action: 'What is the weather in Thailand and make me 7 day itinerary for a trip to thailand?',
   },
   {
     title: 'Help me draft an Itinerary for a trip to Bali',
