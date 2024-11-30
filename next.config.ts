@@ -1,21 +1,25 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  experimental: {
-    ppr: true,
-  },
+  /* config options here */
+
   typescript: {
     ignoreBuildErrors: true,
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    ppr: true,
+  },
   images: {
-    dangerouslyAllowSVG: true,
     remotePatterns: [
       {
+        hostname: 'avatar.vercel.sh',
+      },
+      {
         protocol: "https",
-        hostname: "avatar.vercel.sh",
+        hostname: "*",
       },
     ],
   },
