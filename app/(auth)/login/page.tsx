@@ -8,7 +8,7 @@ import { toast } from 'sonner';
 import { AuthForm } from '@/components/auth-form';
 import { SubmitButton } from '@/components/submit-button';
 
-import { login, type LoginActionState } from '../actions';
+import { login, type LoginActionState } from '../ac tions';
 import { LoginHeader } from '@/components/LoginHeader';
 
 export default function Page() {

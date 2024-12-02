@@ -1,4 +1,3 @@
-/* eslint-disable import/no-named-as-default-member */
 'use client';
 
 import React, { useState, FormEvent } from 'react';
@@ -13,32 +12,61 @@ const ContactUs = () => {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [configError, setConfigError] = useState(false);
+
+  // Log environment variables
+  console.log('EmailJS Service ID:', process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
+  console.log('EmailJS Template ID:', process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID);
+  console.log('EmailJS Public Key:', process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
 
   // Environment variables directly included
   const EMAIL_JS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
   const EMAIL_JS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID;
   const EMAIL_JS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-  if (!EMAIL_JS_SERVICE_ID || !EMAIL_JS_TEMPLATE_ID || !EMAIL_JS_PUBLIC_KEY) {
-    toast.error('Email configuration is missing');
-    return;
-  }
+  React.useEffect(() => {
+    console.log('Component mounted');
+    
+    // Detailed environment variable check
+    console.log('Service ID exists:', !!EMAIL_JS_SERVICE_ID);
+    console.log('Template ID exists:', !!EMAIL_JS_TEMPLATE_ID);
+    console.log('Public Key exists:', !!EMAIL_JS_PUBLIC_KEY);
+
+    if (!EMAIL_JS_SERVICE_ID || !EMAIL_JS_TEMPLATE_ID || !EMAIL_JS_PUBLIC_KEY) {
+      console.error('Email configuration is missing');
+      setConfigError(true);
+      toast.error('Email configuration is missing');
+    }
+  }, []);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+    
+    console.log('Form submission started');
+    console.log('Config Error:', configError);
+
+    if (configError) {
+      console.error('Cannot send email due to configuration error');
+      toast.error('Cannot send email due to configuration error');
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
+      console.log('Attempting to send email via EmailJS');
       const result = await emailjs.send(
-        EMAIL_JS_SERVICE_ID, 
-        EMAIL_JS_TEMPLATE_ID, 
+        EMAIL_JS_SERVICE_ID!, 
+        EMAIL_JS_TEMPLATE_ID!, 
         {
           user_name: name,
           user_email: email,
           message: message
         },
-        EMAIL_JS_PUBLIC_KEY
+        EMAIL_JS_PUBLIC_KEY!
       );
+
+      console.log('Email send result:', result);
 
       toast.success('Message sent successfully!');
       
@@ -80,52 +108,58 @@ const ContactUs = () => {
 
           {/* Form Side */}
           <div className="p-6 md:p-10">
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 size-4 md:size-5" />
-                <input 
-                  type="text" 
-                  placeholder="Your Name"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                  className="w-full pl-8 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
+            {configError ? (
+              <div className="text-red-500 text-center">
+                Email configuration error. Please contact support.
               </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                <div className="relative">
+                  <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 size-4 md:size-5" />
+                  <input 
+                    type="text" 
+                    placeholder="Your Name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    className="w-full pl-8 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
 
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 size-4 md:size-5" />
-                <input 
-                  type="email" 
-                  placeholder="Your Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="w-full pl-8 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
+                <div className="relative">
+                  <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 size-4 md:size-5" />
+                  <input 
+                    type="email" 
+                    placeholder="Your Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full pl-8 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
 
-              <div className="relative">
-                <MessageCircle className="absolute left-3 top-3 text-gray-400 size-4 md:size-5" />
-                <textarea 
-                  placeholder="Your Message"
-                  value={message}
-                  onChange={(e) => setMessage(e.target.value)}
-                  required
-                  rows={4}
-                  className="w-full pl-8 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-                />
-              </div>
+                <div className="relative">
+                  <MessageCircle className="absolute left-3 top-3 text-gray-400 size-4 md:size-5" />
+                  <textarea 
+                    placeholder="Your Message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                    rows={4}
+                    className="w-full pl-8 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                  />
+                </div>
 
-              <Button 
-                type="submit" 
-                disabled={isSubmitting}
-                className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 md:py-3 rounded-lg flex items-center justify-center text-sm md:text-base"
-              >
-                {isSubmitting ? 'Sending...' : 'Send Message'}
-                <Send className="ml-2 size-4 md:size-5" />
-              </Button>
-            </form>
+                <Button 
+                  type="submit" 
+                  disabled={isSubmitting}
+                  className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 md:py-3 rounded-lg flex items-center justify-center text-sm md:text-base"
+                >
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
+                  <Send className="ml-2 size-4 md:size-5" />
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       </motion.div>
