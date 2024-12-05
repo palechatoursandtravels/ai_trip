@@ -8,7 +8,7 @@ import './globals.css';
 export const metadata: Metadata = {
   
   title: {
-    default: 'AI Travel Assistant | Palecha Tours and Travels',
+    default: 'AI Travel Assistant MIMI | Palecha Tours and Travels',
     template: '%s | Palecha Tours and Travels'
   },
   description: 'Travel hassle-free, and explore the world with personalized AI-powered recommendations',
@@ -19,7 +19,8 @@ export const metadata: Metadata = {
     'tour planning',
     'travel technology',
     'book flights directly with help of AI',
-    "Get best fight deals with AI Travel Assistant and our Palecha Tours and Travels"
+    "Get best fight deals with AI Travel Assistant and our Palecha Tours and Travels",
+    "MIMI ypur AI travel Companion"
   ],
   icons: {
     icon: [

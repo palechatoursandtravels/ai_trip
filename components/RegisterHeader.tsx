@@ -3,13 +3,13 @@ import { ArrowLeft} from 'lucide-react';
 
 export function RegisterHeader() {
   return (
-    <header className="absolute top-0 inset-x-0 flex items-center justify-between p-4">
-      <Link 
+    <header className="absolute top-0 inset-x-0 flex items-center justify-end p-4">
+      {/* <Link 
         href="/" 
         className="text-2xl font-bold text-gray-800 dark:text-zinc-50"
       >
         Assistant.
-      </Link>
+      </Link> */}
       <div className="flex items-center gap-2">
         <Link 
           href="/login" 
@@ -18,7 +18,7 @@ export function RegisterHeader() {
           dark:text-zinc-300 dark:hover:bg-zinc-800 transition-colors"
         >
           <ArrowLeft size={16} />
-          Back
+          Login
         </Link>
         <Link 
           href="/" 

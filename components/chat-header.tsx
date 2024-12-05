@@ -68,10 +68,21 @@ export function ChatHeader({
       .trim(); // Remove leading/trailing spaces
   };
 
+  const validatePhoneNumber = (phone: string) => {
+    const phoneRegex = /^(?:\+91|0)?[6-9]\d{9}$|^\+?[1-9]\d{1,14}$/;
+    return phoneRegex.test(phone);
+  };
+
+  
   const handleContactExpert = async () => {
 
     if (!userName || !phoneNumber) {
       toast.error('Name and phone number are required');
+      return;
+    }
+
+    if (!validatePhoneNumber(phoneNumber)) {
+      toast.error('Please enter a valid phone number');
       return;
     }
 
@@ -187,11 +198,14 @@ export function ChatHeader({
               required
             />
             <Input
-              placeholder="Your Phone Number"
-              value={phoneNumber}
-              onChange={(e) => setPhoneNumber(e.target.value)}
-              required
-            />
+                placeholder="Your Phone Number"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                className={!validatePhoneNumber(phoneNumber) && phoneNumber ? 'border-red-500' : ''}
+                />
+                {!validatePhoneNumber(phoneNumber) && phoneNumber && (
+                  <p className="text-red-500 text-sm">Enter a valid phone number</p>
+                )}
           </div>
           <DialogFooter>
           <Button className="bg-teal-500"onClick={handleContactExpert} disabled={isSubmitting}>

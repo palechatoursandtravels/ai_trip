@@ -14,9 +14,9 @@ const faqs = [
       "AI-Powered, Human-Centered Travel. We harness the best of both worlds to create extraordinary journeys",
   },
   {
-    question: "Is Palechas free?",
+    question: "How does Our process create unique travel experiences?",
     answer:
-      "Our core travel planning experience is 100% free. We believe amazing travel should be accessible to everyone.",
+      "The Future of Travel, Today. We blend cutting-edge AI technology with the warmth of human expertise to deliver personalized, unforgettable travel experiences",
   },
   {
     question: "How do you create personalized recommendations?",
@@ -24,14 +24,14 @@ const faqs = [
       "Our smart AI dives deep into your travel preferences, analyzing your interests, budget, and dream destinations. We blend cutting-edge technology with travel expertise to design trips that feel like they were crafted just for you.",
   },
   {
-    question: "How flexible are the travel plans?",
+    question: "How this approach works?",
     answer:
-      "Total flexibility is our promise. Swap destinations, adjust timelines, or completely remix your itinerary. Your journey, your rules—we're just here to make it epic.",
+      "Redefining Travel, One Journey at a Time. We believe that AI and human expertise, working together, can create unparalleled travel experiences. Let us show you the future of travel.",
   },
   {
     question: "Need support?",
     answer:
-      "Got questions? Reach out to our support team at support@palechatours.com. We're always ready to help you turn travel dreams into reality.",
+      "Got questions? Reach out to our support team at `palechatoursandtravels1@gmail.com`. We're always ready to help you turn travel dreams into reality.",
   },
 ]
 

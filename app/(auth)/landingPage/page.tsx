@@ -33,7 +33,7 @@ export default function LandingPage() {
       </h1>
 
       <p className="mt-5 max-w-prose text-zinc-400 sm:text-lg">
-        Assistant Allows you to plan, Customize and Create Itineraries in Seconds.
+       <span className="text-teal-500">MIMI</span>  Allows you to plan, Customize and Create Itineraries in Seconds.
         <br />
         Start Planning Right Away!
       </p>
