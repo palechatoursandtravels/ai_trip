@@ -1,3 +1,4 @@
+/* eslint-disable import/no-named-as-default-member */
 'use client';
 
 import React, { useState, FormEvent } from 'react';
