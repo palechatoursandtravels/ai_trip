@@ -40,7 +40,7 @@ export default function PrivacyPolicy() {
           </div>
           
           <div className="hidden md:block">
-            <div className="relative w-full h-[500px]">
+            <div className="relative w-full max-w-[700px] aspect-video">
               <Image 
                 src="/images/palecha_logo.jpg" 
                 alt="Travel Privacy Illustration" 

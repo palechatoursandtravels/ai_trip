@@ -24,7 +24,7 @@ export default function LandingPage() {
       rounded-full border border-gray-200 bg-white px-7 py-2 shadow-md backdrop-blur 
       transition-all hover:border-gray-300 hover:bg-whie/50"
       >
-        <p className="text-2xl font-semibold text-pink-400">Travel Hassel-free</p>
+        <p className="text-2xl font-semibold text-pink-400">ASK BUDDY!</p>
         {/* <p className="text-sm font-bold text-pink-200">YOU PACK, WE PLAN THE REST</p> */}
       </div>
 
@@ -33,7 +33,7 @@ export default function LandingPage() {
       </h1>
 
       <p className="mt-5 max-w-prose text-zinc-400 sm:text-lg">
-       <span className="text-teal-500">MIMI</span>  Allows you to plan, Customize and Create Itineraries in Seconds.
+       <span className="text-teal-500">Travel Buddy</span>  Allows you to plan, Customize and Create Itineraries in Seconds.
         <br />
         Start Planning Right Away!
       </p>
@@ -44,14 +44,14 @@ export default function LandingPage() {
       <Features/>
       <AboutUs className="mt-10 mb-1"/>
       {/* Feature Section */}
-      <div className="mx-auto my-32 max-w-5xl sm:mt-56">
+      <div className="mx-10 my-32 max-w-8xl sm:mt-56">
         <div className="mb-12 px-6 lg:px-8">
           <div className="mx-auto max-w-2xl sm:text-center">
             <h2 className="mt-2 font-bold text-4xl text-black-900 sm:text-5xl dark:text-white">
-              Start Planning!
+              A Step-by-Step Guide to Your Dream Vacation
             </h2>
             <p className="mt-4 text-lg text-teal-400">
-              Planning your Trips has never been easier than with Mimi
+              Planning your Trips has never been easier than with Travel Buddy
             </p>
           </div>
         </div>
@@ -63,10 +63,10 @@ export default function LandingPage() {
                 Step 1
               </span>
               <span className="text-xl font-semibold ">
-                Sign Up for an Account
+                Sign In or Create an Accoun
               </span>
-              <span className="mt-2 text-teal-700">
-              Either Thinking of Travel or want to refine the <Link href="/login" target="_black" className="underline underline-offset-2">Itinerary</Link>.
+              <span className="mt-2 text-teal-700 text-justify">
+              Begin by signing in to your existing account or creating a <Link href="/login" target="_black" className="underline underline-offset-2">new one.</Link>.
               </span>
             </div>
           </li>
@@ -77,10 +77,10 @@ export default function LandingPage() {
                 Step 2
               </span>
               <span className="text-xl font-semibold ">
-                Start Filling preferences
+              Share Your Dream Vacation
               </span>
-              <span className="mt-2 text-teal-700">
-              Plan Your Dream Trip with AI
+              <span className="mt-2 text-teal-700 text-justify">
+              Provide details about your desired destination, specific interests to our AI travel assistant.
               </span>
             </div>
           </li>
@@ -91,10 +91,49 @@ export default function LandingPage() {
                 Step 3
               </span>
               <span className="text-xl font-semibold ">
-                Start Planing and Packing
+                AI-Generated Itinerary
               </span>
-              <span className="mt-2 text-teal-700">
-              Discover personalized travel experiences tailored just for you
+              <span className="mt-2 text-teal-700 text-justify">
+                Our AI will quickly generate a personalized itinerary based on your preferences.
+              </span>
+            </div>
+          </li>
+          <li className="md:flex-1 ">
+            <div className="flex flex-col space-y-2 border-l-4 border-zince-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4">
+              <span className="text-sm font-medium text-teal-500">
+                Step 4
+              </span>
+              <span className="text-xl font-semibold ">
+                Refine Your Itinerary
+              </span>
+              <span className="mt-2 text-teal-700 text-justify">
+                Use our intuitive tools to edit, modify, and customize your itinerary as needed.
+              </span>
+            </div>
+          </li>
+          <li className="md:flex-1 ">
+            <div className="flex flex-col space-y-2 border-l-4 border-zince-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4">
+              <span className="text-sm font-medium text-teal-500">
+                Step 5
+              </span>
+              <span className="text-xl font-semibold ">
+                Expert Consultation
+              </span>
+              <span className="mt-2 text-teal-700 text-justify">
+                Once you&apos;re satisfied with your itinerary, connect with one of our expert travel consultants.
+              </span>
+            </div>
+          </li>
+          <li className="md:flex-1 ">
+            <div className="flex flex-col space-y-2 border-l-4 border-zince-300 py-2 pl-4 md:border-l-0 md:border-t-2 md:pb-0 md:pl-0 md:pt-4">
+              <span className="text-sm font-medium text-teal-500">
+                Step 6
+              </span>
+              <span className="text-xl font-semibold ">
+                Book Your Dream Vacation
+              </span>
+              <span className="mt-2 text-teal-700 text-justify">
+                Finalize your booking and get ready to embark on your unforgettable journey.
               </span>
             </div>
           </li>

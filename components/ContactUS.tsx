@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable import/no-named-as-default-member */
 'use client';
 
@@ -99,12 +100,12 @@ const ContactUs = () => {
               Have questions or want to get started? 
               Drop us a message and we&apos;ll get back to you within 24 hours.
             </p>
-            <div className="space-y-2 md:space-y-4">
+            {/* <div className="space-y-2 md:space-y-4">
               <div className="flex items-center text-sm md:text-base">
                 <Mail className="mr-2 md:mr-3 size-4 md:size-5" />
                 <span>palechatoursandtravels1@gmail.com</span>
               </div>
-            </div>
+            </div> */}
           </div>
 
           {/* Form Side */}

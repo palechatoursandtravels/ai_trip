@@ -94,7 +94,7 @@ const Tool = ({
         append({
           role: 'user',
           content:
-            'Please add suggestions you have that could improve the writing.',
+            'Please add suggestions you have that could improve my travel Itinerary',
         });
 
         setSelectedTool(null);

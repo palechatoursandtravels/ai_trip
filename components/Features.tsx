@@ -2,7 +2,7 @@
 
 import { useInView } from 'react-intersection-observer'
 import { motion } from 'framer-motion'
-import { Lightbulb, Map, Clock } from 'lucide-react'
+import { Lightbulb, Map, Clock, DollarSign, TimerOff, WineIcon, PhoneForwarded } from 'lucide-react'
 
 const features = [
   {
@@ -19,6 +19,21 @@ const features = [
     icon: Clock,
     title: 'Personalized Service',
     description: 'Benefit from the personalized attention of a dedicated travel consultant, who is available to answer your questions, address concerns, and provide expert advice throughout your journey.',
+  },
+  {
+    icon: DollarSign,
+    title: 'Exclusive Deals and Discounts',
+    description: 'Benefit from our partnerships with top travel providers to secure the best deals on your behalf.',
+  },
+  {
+    icon: TimerOff,
+    title: 'Time-Saving',
+    description: 'Our AI-powered platform streamlines the planning process, saving you valuable time and effort.',
+  },
+  {
+    icon: PhoneForwarded,
+    title: 'Exceptional Customer Service',
+    description: 'Our dedicated team is committed to providing exceptional customer service, from initial inquiry to post-trip support.',
   },
 ]
 
