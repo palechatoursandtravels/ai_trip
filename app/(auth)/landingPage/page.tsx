@@ -65,8 +65,8 @@ export default function LandingPage() {
               <span className="text-xl font-semibold ">
                 Sign In or Create an Accoun
               </span>
-              <span className="mt-2 text-teal-700 text-justify">
-              Begin by signing in to your existing account or creating a <Link href="/login" target="_black" className="underline underline-offset-2">new one.</Link>.
+              <span className="mt-2 text-teal-700">
+              Begin by signing in to your existing account or creating a <Link href="/login" target="_black" className="underline underline-offset-2">new one.</Link>
               </span>
             </div>
           </li>
@@ -79,7 +79,7 @@ export default function LandingPage() {
               <span className="text-xl font-semibold ">
               Share Your Dream Vacation
               </span>
-              <span className="mt-2 text-teal-700 text-justify">
+              <span className="mt-2 text-teal-700">
               Provide details about your desired destination, specific interests to our AI travel assistant.
               </span>
             </div>
@@ -93,7 +93,7 @@ export default function LandingPage() {
               <span className="text-xl font-semibold ">
                 AI-Generated Itinerary
               </span>
-              <span className="mt-2 text-teal-700 text-justify">
+              <span className="mt-2 text-teal-700">
                 Our AI will quickly generate a personalized itinerary based on your preferences.
               </span>
             </div>
@@ -106,7 +106,7 @@ export default function LandingPage() {
               <span className="text-xl font-semibold ">
                 Refine Your Itinerary
               </span>
-              <span className="mt-2 text-teal-700 text-justify">
+              <span className="mt-2 text-teal-700">
                 Use our intuitive tools to edit, modify, and customize your itinerary as needed.
               </span>
             </div>
@@ -119,7 +119,7 @@ export default function LandingPage() {
               <span className="text-xl font-semibold ">
                 Expert Consultation
               </span>
-              <span className="mt-2 text-teal-700 text-justify">
+              <span className="mt-2 text-teal-700">
                 Once you&apos;re satisfied with your itinerary, connect with one of our expert travel consultants.
               </span>
             </div>
@@ -132,7 +132,7 @@ export default function LandingPage() {
               <span className="text-xl font-semibold ">
                 Book Your Dream Vacation
               </span>
-              <span className="mt-2 text-teal-700 text-justify">
+              <span className="mt-2 text-teal-700">
                 Finalize your booking and get ready to embark on your unforgettable journey.
               </span>
             </div>

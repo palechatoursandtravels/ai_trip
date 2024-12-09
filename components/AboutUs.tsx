@@ -36,7 +36,7 @@ const AboutUs = ({ className }: { className?: string }) => {
             transition={{ duration: 0.5, delay: 0.2 }}
             className="md:w-1/2 md:pl-12"
           >
-            <h2 className="text-4xl font-bold mb-6">About US</h2>
+            <h2 className="text-4xl font-bold mb-6">About Us</h2>
             <p className="text-xl text-muted-foreground mb-6">
              At Palecha Tours, we envision a future where travel planning is effortless, personalized, and efficient. By combining the power of AI with the expertise of human travel consultants, we aim to revolutionize the way you experience the world.
 

@@ -2,7 +2,7 @@
 /* eslint-disable import/no-named-as-default-member */
 'use client';
 
-import React, { useState, FormEvent } from 'react';
+import React, { useState, FormEvent, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Send, User, Mail, MessageCircle } from 'lucide-react';
 import emailjs from '@emailjs/browser';
@@ -15,16 +15,73 @@ const ContactUs = () => {
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [configError, setConfigError] = useState(false);
+  const [isFormValid, setIsFormValid] = useState(false);
+  const [nameError, setNameError] = useState('');
 
-  // Log environment variables
-  console.log('EmailJS Service ID:', process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
-  console.log('EmailJS Template ID:', process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID);
-  console.log('EmailJS Public Key:', process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
+
+  // // Log environment variables
+  // console.log('EmailJS Service ID:', process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID);
+  // console.log('EmailJS Template ID:', process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID);
+  // console.log('EmailJS Public Key:', process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY);
 
   // Environment variables directly included
   const EMAIL_JS_SERVICE_ID = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
   const EMAIL_JS_TEMPLATE_ID = process.env.NEXT_PUBLIC_EMAILJS_CONTACT_TEMPLATE_ID;
   const EMAIL_JS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+
+  useEffect(() => {
+    // Trim whitespace and check if all fields are non-empty
+    const formFilled = 
+      name.trim() !== '' && 
+      email.trim() !== '' && 
+      message.trim() !== '';
+    
+    setIsFormValid(formFilled);
+  }, [name, email, message]);
+
+
+  // Name validation function
+  const validateName = (nameToValidate: string): boolean => {
+    // Remove leading/trailing whitespace
+    const trimmedName = nameToValidate.trim();
+
+    // Check if name is empty
+    if (trimmedName.length === 0) {
+      setNameError('Name cannot be empty');
+      return false;
+    }
+
+    // Regex for name validation
+    // Allows letters, spaces, and hyphens
+    // Requires at least two words with meaningful characters
+    const nameRegex = /^[A-Za-z]+(?:\s+[A-Za-z]+)+$/;
+    
+    // Additional checks to prevent nonsense inputs
+    const isValidFormat = nameRegex.test(trimmedName);
+    const hasRepeatedChars = /(.)\1{3,}/.test(trimmedName); // Prevents excessive repeated characters
+    const hasMeaningfulLength = trimmedName.length >= 4 && trimmedName.length <= 50;
+
+    if (!isValidFormat) {
+      setNameError('Please enter a valid full name (first and last name)');
+      return false;
+    }
+
+    if (hasRepeatedChars) {
+      setNameError('Name contains invalid repeated characters');
+      return false;
+    }
+
+    if (!hasMeaningfulLength) {
+      setNameError('Name must be between 4 and 50 characters');
+      return false;
+    }
+
+    // Clear any previous error
+    setNameError('');
+    return true;
+  };
+
+
 
   React.useEffect(() => {
     console.log('Component mounted');
@@ -43,7 +100,20 @@ const ContactUs = () => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    // Revalidate all fields before submission
+    const isNameValid = validateName(name);
     
+    if (!isNameValid) {
+      toast.error('Please correct the name field');
+      return;
+    }
+    
+    if (!isFormValid) {
+      toast.error('Please fill out all fields');
+      return;
+    }
+
     console.log('Form submission started');
     console.log('Config Error:', configError);
 
@@ -100,12 +170,6 @@ const ContactUs = () => {
               Have questions or want to get started? 
               Drop us a message and we&apos;ll get back to you within 24 hours.
             </p>
-            {/* <div className="space-y-2 md:space-y-4">
-              <div className="flex items-center text-sm md:text-base">
-                <Mail className="mr-2 md:mr-3 size-4 md:size-5" />
-                <span>palechatoursandtravels1@gmail.com</span>
-              </div>
-            </div> */}
           </div>
 
           {/* Form Side */}
@@ -124,8 +188,15 @@ const ContactUs = () => {
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="w-full pl-8 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+                    className={`w-full pl-8 md:pl-10 pr-4 py-2 md:py-3 text-sm md:text-base border rounded-lg focus:outline-none focus:ring-2 ${
+                      nameError 
+                        ? 'border-red-500 focus:ring-red-500' 
+                        : 'border-gray-300 focus:ring-teal-500'
+                    }`}
                   />
+                  {nameError && (
+                    <p className="text-red-500 text-xs mt-1">{nameError}</p>
+                  )}
                 </div>
 
                 <div className="relative">
@@ -154,7 +225,7 @@ const ContactUs = () => {
 
                 <Button 
                   type="submit" 
-                  disabled={isSubmitting}
+                  disabled={!isFormValid || isSubmitting}
                   className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 md:py-3 rounded-lg flex items-center justify-center text-sm md:text-base"
                 >
                   {isSubmitting ? 'Sending...' : 'Send Message'}
