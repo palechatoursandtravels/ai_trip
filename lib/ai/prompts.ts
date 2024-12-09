@@ -5,6 +5,7 @@ export const blocksPrompt = `
   - For substantial content (>10 lines)
   - For content users will likely save/reuse (emails, code, essays, etc.)
   - When explicitly requested to create a document
+  - Automatically open the document when asked to create the travel Itinerary
   **When NOT to use \`createDocument\`:**
   - For informational/explanatory content
   - For conversational responses
