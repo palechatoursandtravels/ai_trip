@@ -38,11 +38,11 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-gray-100 text-black py-8 md:py-12 border border-t-1 w-full">
+    <footer className="bg-gray-100 text-black py-8 md:py-12 border border-t-1 w-full grainy">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 md:gap-8">
           <div className="mb-4 md:mb-0">
-            <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Palecha Tours</h3>
+            <h3 className="text-lg md:text-xl font-semibold mb-2 md:mb-4">Palecha Tours and Travel</h3>
             <p className="text-xs md:text-sm">AI-powered travel planning for unforgettable experiences.</p>
           </div>
           <div className="mb-4 md:mb-0">

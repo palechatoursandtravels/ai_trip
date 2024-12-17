@@ -155,7 +155,7 @@ const ContactUs = () => {
   };
 
   return (
-    <section className="bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:py-16" id="contact">
+    <section className="bg-gray-100 dark:bg-gray-900 py-12 px-4 sm:py-16 grainy" id="contact">
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, y: 0 }}
