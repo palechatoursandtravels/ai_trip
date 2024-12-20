@@ -5,7 +5,7 @@ import { useChat } from 'ai/react';
 import { AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
-import { useWindowSize } from 'usehooks-ts';
+import { useLocalStorage, useWindowSize } from 'usehooks-ts';
 
 import { ChatHeader } from '@/components/chat-header';
 import { PreviewMessage, ThinkingMessage } from '@/components/message';
@@ -17,6 +17,7 @@ import { Block, type UIBlock } from './block';
 import { BlockStreamHandler } from './block-stream-handler';
 import { MultimodalInput } from './multimodal-input';
 import { Overview } from './overview';
+import { Guide } from './guide';
 
 export function Chat({
   id,
@@ -74,7 +75,13 @@ export function Chat({
 
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
 
-  
+  const [hasSeenGuide, setHasSeenGuide] = useLocalStorage('hasSeenGuide', false);
+  const [showGuide, setShowGuide] = useState(!hasSeenGuide);
+
+  const handleGuideClose = () => {
+    setShowGuide(false);
+    setHasSeenGuide(true);
+  };
 
   const lastAIMessage = messages
   .filter(msg => msg.role === 'assistant')
@@ -135,6 +142,8 @@ export function Chat({
           />
         </form>
       </div>
+
+      <Guide isOpen={showGuide} onClose={handleGuideClose} />
 
       <AnimatePresence>
         {block?.isVisible && (
