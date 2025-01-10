@@ -1,0 +1,1 @@
+ALTER TABLE "User" ALTER COLUMN "provider" SET DATA TYPE varchar(8);

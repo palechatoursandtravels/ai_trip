@@ -16,6 +16,7 @@ const smoothScroll = (targetId: string) => {
 };
 
 const NavBar = () => {
+
   useEffect(() => {
     // Ensure smooth scroll polyfill for older browsers
     if (typeof window !== 'undefined') {

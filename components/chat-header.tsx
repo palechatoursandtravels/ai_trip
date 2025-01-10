@@ -17,6 +17,7 @@ import { getCurrentUserEmail } from '@/lib/db/actions';
 import { UIBlock } from './block'; // Import UIBlock type
 import { Input } from './ui/input';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
 
 export function ChatHeader({ 
   selectedModelId, 
@@ -36,6 +37,7 @@ export function ChatHeader({
   const [userName, setUserName] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [tabsOpen, setTabsOpen] = useState(false);
 
   const { width: windowWidth } = useWindowSize();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -154,38 +156,74 @@ export function ChatHeader({
 
   return (
     <>
-    
-    <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
-      <SidebarToggle />
-      {(!open || windowWidth < 768) && (
-        <BetterTooltip content="New Chat">
-          <Button
-            variant="outline"
-            className="order-2 md:order-1 md:px-2 px-2 md:h-fit ml-auto md:ml-0"
-            onClick={() => {
-              router.push('/');
-              router.refresh();
-            }}
-          >
-            <PlusIcon />
-            <span className="md:sr-only">New Chat</span>
-          </Button>
-        </BetterTooltip>
-      )}
-      {/* <ModelSelector
-        selectedModelId={selectedModelId}
-        className="order-1 md:order-2"
-      /> */}
-      <Button
-        className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 hidden md:flex py-1.5 px-2 h-fit md:h-[34px] order-4 md:ml-auto"
-        onClick={() => setDialogOpen(true)}
-      >
-        <Contact2 size={16} className="mr-2" />
-        Contact Expert
-      </Button>
-    </header>
+      <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
+        <SidebarToggle />
+        {(!open || windowWidth < 768) && (
+          <BetterTooltip content="New Chat">
+            <Button
+              variant="outline"
+              className="order-2 md:order-1 md:px-2 px-2 md:h-fit ml-auto md:ml-0"
+              onClick={() => {
+                router.push('/');
+                router.refresh();
+              }}
+            >
+              <PlusIcon />
+              <span className="md:sr-only">New Chat</span>
+            </Button>
+          </BetterTooltip>
+        )}
+        <Button
+          className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 hidden md:flex py-3 px-6 h-12 text-lg font-medium order-4 md:ml-auto rounded-lg transition-all duration-200 hover:scale-105"
+          onClick={() => setTabsOpen(true)}
+        >
+          <Contact2 size={24} className="mr-3" />
+          Contact Expert
+        </Button>
+      </header>
 
-        <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <Dialog open={tabsOpen} onOpenChange={setTabsOpen}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Choose an Option</DialogTitle>
+          </DialogHeader>
+          <Tabs defaultValue="changes" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="changes">Make Changes</TabsTrigger>
+              <TabsTrigger value="contact">Contact Now</TabsTrigger>
+            </TabsList>
+            <TabsContent value="changes">
+              <div className="space-y-4 p-4">
+                <p>Would you like to make any changes to your current plan?</p>
+                <Button 
+                  className="w-full"
+                  onClick={() => {
+                    setTabsOpen(false);
+                    // Add logic for handling changes
+                  }}
+                >
+                  Review Changes
+                </Button>
+              </div>
+            </TabsContent>
+            <TabsContent value="contact">
+              <div className="space-y-4 p-4">
+                <Button 
+                  className="w-full bg-teal-500 hover:bg-teal-600"
+                  onClick={() => {
+                    setTabsOpen(false);
+                    setDialogOpen(true);
+                  }}
+                >
+                  Contact Expert Now
+                </Button>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Contact Expert</DialogTitle>
@@ -198,23 +236,22 @@ export function ChatHeader({
               required
             />
             <Input
-                placeholder="Your Phone Number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                className={!validatePhoneNumber(phoneNumber) && phoneNumber ? 'border-red-500' : ''}
-                />
-                {!validatePhoneNumber(phoneNumber) && phoneNumber && (
-                  <p className="text-red-500 text-sm">Enter a valid phone number</p>
-                )}
+              placeholder="Your Phone Number"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+              className={!validatePhoneNumber(phoneNumber) && phoneNumber ? 'border-red-500' : ''}
+            />
+            {!validatePhoneNumber(phoneNumber) && phoneNumber && (
+              <p className="text-red-500 text-sm">Enter a valid phone number</p>
+            )}
           </div>
           <DialogFooter>
-          <Button className="bg-teal-500"onClick={handleContactExpert} disabled={isSubmitting}>
+            <Button className="bg-teal-500" onClick={handleContactExpert} disabled={isSubmitting}>
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
           </DialogFooter>
         </DialogContent>
-        </Dialog>
-
-</>
+      </Dialog>
+    </>
   );
 }
