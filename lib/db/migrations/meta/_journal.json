@@ -24,24 +24,10 @@
       "breakpoints": true
     },
     {
-      "idx": 3,
+      "idx": 6,
       "version": "7",
-      "when": 1734779950955,
-      "tag": "0003_lovely_argent",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1734780083642,
-      "tag": "0004_bright_flatman",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1734780326964,
-      "tag": "0005_modern_baron_zemo",
+      "when": 1736523035998,
+      "tag": "0006_violet_lorna_dane",
       "breakpoints": true
     }
   ]
