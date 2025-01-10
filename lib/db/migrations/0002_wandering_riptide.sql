@@ -33,3 +33,4 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 ALTER TABLE "Chat" DROP COLUMN IF EXISTS "messages";
+-- I hope not it works!
