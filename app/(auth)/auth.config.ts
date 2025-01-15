@@ -16,6 +16,7 @@ export const authConfig = {
       const isOnChat = nextUrl.pathname.startsWith('/');
       const isOnRegister = nextUrl.pathname.startsWith('/register');
       const isOnLogin = nextUrl.pathname.startsWith('/login');
+      // const isOnOnboarding = nextUrl.pathname.startsWith('/onboarding');
 
       const isOnPrivacy = nextUrl.pathname === '/privacyPolicy';
       const isOnTerms = nextUrl.pathname === '/termsConditions';
@@ -37,6 +38,9 @@ export const authConfig = {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       }
+
+     
+
 
       if (isLoggedIn) {
         return Response.redirect(new URL('/', nextUrl as unknown as URL));
