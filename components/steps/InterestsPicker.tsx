@@ -3,10 +3,15 @@
 import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useOnboardingStore } from '@/app/store/onboardingStore';
+import { useRouter } from 'next/navigation';
+import { saveOnboardingData } from '@/lib/onboarding';
 
 export default function InterestsPicker() {
   const { updateData, setStep, data } = useOnboardingStore();
   const [customInterest, setCustomInterest] = useState('');
+  const [showCustomInput, setShowCustomInput] = useState(false);
+
+  const router = useRouter();
 
   // Predefined interests for Varkala
   const defaultInterests = [
@@ -24,18 +29,57 @@ export default function InterestsPicker() {
     'Culture',
   ];
 
+  // Get custom interests (interests that aren't in defaultInterests)
+  const customInterests = data.interests.filter(
+    interest => !defaultInterests.includes(interest)
+  );
+
   const handleInterestToggle = (interest: string) => {
     const newInterests = data.interests.includes(interest)
       ? data.interests.filter(i => i !== interest)
       : [...data.interests, interest];
-
     updateData({ interests: newInterests });
   };
 
   const handleAddCustomInterest = () => {
-    if (customInterest.trim() && !data.interests.includes(customInterest)) {
-      updateData({ interests: [...data.interests, customInterest.trim()] });
-      setCustomInterest('');
+    const trimmedInterest = customInterest.trim();
+    
+    if (!trimmedInterest) {
+      return;
+    }
+    
+    if (data.interests.includes(trimmedInterest)) {
+     
+      return;
+    }
+
+    // Create a new array with the existing interests plus the new one
+    const updatedInterests = [...data.interests, trimmedInterest];
+
+    
+    // Update the store with the new interests array
+    updateData({ interests: updatedInterests });
+    
+    // Reset the input and hide it
+    setCustomInterest('');
+    setShowCustomInput(false);
+  };
+
+  const handleSubmit = async () => {
+    if (data.interests.length > 0) {
+      try {
+        // You might want to save to your backend here
+        await saveOnboardingData(data); // You'll need to implement this
+        router.push('/');
+      } catch (error) {
+        console.error('Error saving onboarding data:', error);
+      }
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddCustomInterest();
     }
   };
 
@@ -61,46 +105,67 @@ export default function InterestsPicker() {
           </button>
         ))}
         
+        {/* Custom interests */}
+        {customInterests.map((interest) => (
+          <button
+            key={`custom-${interest}`}
+            onClick={() => handleInterestToggle(interest)}
+            className="px-4 py-2 rounded-full border bg-black text-white border-black"
+          >
+            {interest}
+          </button>
+        ))}
+        
         <button
-          onClick={() => {
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.placeholder = 'Add custom interest';
-            input.className = 'px-4 py-2 rounded-full border';
-            document.body.appendChild(input);
-            input.focus();
-          }}
-          className="px-4 py-2 rounded-full border flex items-center gap-2"
+          onClick={() => setShowCustomInput(true)}
+          className="px-4 py-2 rounded-full border flex items-center gap-2 hover:border-gray-300"
         >
           <Plus className="size-4" />
           Add interest
         </button>
       </div>
 
-      <div className="flex justify-between w-full max-w-xl">
-        <button
-          onClick={() => setStep(3)}
-          className="text-black underline"
-        >
-          Back
-        </button>
-        <button
-          onClick={() => {
-            if (data.interests.length > 0) {
-              // Here you would typically save all data and redirect to chat
-              console.log('Complete onboarding data:', data);
-              // Router.push('/chat');
-            }
-          }}
-          className={`px-6 py-2 rounded-full ${
-            data.interests.length > 0
-              ? 'bg-black text-white'
-              : 'bg-gray-200 text-gray-500'
-          }`}
-          disabled={data.interests.length === 0}
-        >
-          Submit
-        </button>
+      <div className="w-full max-w-xl">
+        <div className="flex justify-between mb-4">
+          <button
+            onClick={() => setStep(3)}
+            className="text-black underline"
+          >
+            Back
+          </button>
+          <button
+            onClick={handleSubmit}
+            className={`px-6 py-2 rounded-full ${
+              data.interests.length > 0
+                ? 'bg-black text-white'
+                : 'bg-gray-200 text-gray-500'
+            }`}
+            disabled={data.interests.length === 0}
+          >
+            Submit
+          </button>
+        </div>
+
+        {showCustomInput && (
+          <div className="flex gap-2 justify-center">
+            <input
+              type="text"
+              value={customInterest}
+              onChange={(e) => setCustomInterest(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Enter your interest"
+              className="px-4 py-2 rounded-full border focus:outline-none focus:border-black"
+              autoFocus
+            />
+            <button
+              onClick={handleAddCustomInterest}
+              className="px-4 py-2 rounded-full bg-black text-white disabled:bg-gray-200 disabled:text-gray-500"
+              disabled={!customInterest.trim()}
+            >
+              Add
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

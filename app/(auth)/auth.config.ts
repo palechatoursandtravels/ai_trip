@@ -3,7 +3,7 @@ import type { NextAuthConfig } from 'next-auth';
 export const authConfig = {
   pages: {
     signIn: '/landingPage',
-    newUser: '/',
+    newUser: '/onbaording',
   },
   providers: [
     // added later in auth.ts since it requires bcrypt which is only compatible with Node.js
@@ -16,8 +16,7 @@ export const authConfig = {
       const isOnChat = nextUrl.pathname.startsWith('/');
       const isOnRegister = nextUrl.pathname.startsWith('/register');
       const isOnLogin = nextUrl.pathname.startsWith('/login');
-      // const isOnOnboarding = nextUrl.pathname.startsWith('/onboarding');
-
+      const isOnboarding = nextUrl.pathname.startsWith('/onboarding');
       const isOnPrivacy = nextUrl.pathname === '/privacyPolicy';
       const isOnTerms = nextUrl.pathname === '/termsConditions';
 
@@ -26,9 +25,28 @@ export const authConfig = {
 
       if (isOnRoot) return true; // Allow access to landing page
 
-      if (isLoggedIn && (isOnLogin || isOnRegister)) {
-        return Response.redirect(new URL('/', nextUrl as unknown as URL));
+      // if(isOnboarding) {
+      //   if (isLoggedIn) return true;
+      //   return false;
+      // }
+
+      if (isOnboarding) {
+        if (isLoggedIn) {
+          // Instead of checking localStorage or cookies, just allow access to onboarding
+          // The client-side navigation will handle redirecting if onboarding is complete
+          return true;
+        }
+        return false;
       }
+
+       
+     
+
+      if (isLoggedIn && (isOnLogin || isOnRegister)) {
+        return Response.redirect(new URL('/onboarding', nextUrl as unknown as URL));
+      }
+
+   
 
       if (isOnRegister || isOnLogin) {
         return true; // Always allow access to register and login pages
@@ -39,11 +57,9 @@ export const authConfig = {
         return false; // Redirect unauthenticated users to login page
       }
 
-     
-
 
       if (isLoggedIn) {
-        return Response.redirect(new URL('/', nextUrl as unknown as URL));
+        return Response.redirect(new URL('/onboarding', nextUrl as unknown as URL));
       }
 
       return true;

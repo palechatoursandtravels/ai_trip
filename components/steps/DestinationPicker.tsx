@@ -1,9 +1,44 @@
 import { useOnboardingStore } from "@/app/store/onboardingStore";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+import usePlacesAutocomplete, {
+  getGeocode,
+  getDetails
+} from "use-places-autocomplete";
+import { Input } from "@/components/ui/input";
 
 export default function DestinationPicker() {
   const { updateData, setStep } = useOnboardingStore();
+  
+  const {
+    ready,
+    value,
+    suggestions: { status, data },
+    setValue,
+    clearSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      types: ['(cities)']
+    },
+    debounce: 300
+  });
+
+  const handleSelect = async (suggestion: any) => {
+    setValue(suggestion.description, false);
+    clearSuggestions();
+
+    try {
+      const results = await getGeocode({ placeId: suggestion.place_id });
+      
+      updateData({
+        destination: {
+          name: suggestion.description,
+          placeId: suggestion.place_id,
+        },
+      });
+      setStep(2);
+    } catch (error) {
+      console.error("Error: ", error);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -14,38 +49,28 @@ export default function DestinationPicker() {
         You&apos;ll get custom recs you can save and turn into an itinerary.
       </p>
       
-      <div className="w-full max-w-xl">
-        <GooglePlacesAutocomplete
+      <div className="w-full max-w-xl relative">
+        <Input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          disabled={!ready}
           placeholder="Choose a city or town"
-          onPress={(data) => {
-            updateData({
-              destination: {
-                name: data.description,
-                placeId: data.place_id,
-              },
-            });
-            setStep(2);
-          }}
-          query={{
-            key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-            types: '(cities)',
-          }}
-          styles={{
-            container: {
-              flex: 0,
-              width: '100%',
-            },
-            textInputContainer: {
-              width: '100%',
-            },
-            textInput: {
-              height: 50,
-              borderRadius: 25,
-              paddingHorizontal: 20,
-              fontSize: 16,
-            },
-          }}
+          className="h-12 px-6 rounded-full text-lg"
         />
+        
+        {status === "OK" && (
+          <ul className="absolute w-full bg-white mt-1 rounded-lg shadow-lg border border-gray-200 max-h-60 overflow-y-auto z-10">
+            {data.map((suggestion) => (
+              <li
+                key={suggestion.place_id}
+                className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                onClick={() => handleSelect(suggestion)}
+              >
+                {suggestion.description}
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

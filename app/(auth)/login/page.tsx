@@ -30,7 +30,8 @@ export default function Page() {
       toast.error('Failed validating your submission!');
     } else if (state.status === 'success') {
       setIsSuccessful(true);
-      router.refresh();
+      router.push('/onboarding');  // Change this line to redirect to Onboarding
+    
     }
   }, [state.status, router]);
 
