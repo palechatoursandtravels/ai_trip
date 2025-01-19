@@ -1,21 +1,18 @@
 import { getOnboardingDataForPrompt } from "./promptHelper";
-
 // Create a cache for the context
 let cachedContextPrompt = '';
 
-// Function to update the cache
-export function updateContextPromptCache() {
-  if (typeof window !== 'undefined') {
-    
-    const onboardingData = getOnboardingDataForPrompt();
-    console.log('Onboarding data retrieved:', onboardingData); // Log the raw data
-    if (onboardingData) {
-      cachedContextPrompt =  `
-        I see you're planning a ${onboardingData.tripType} to ${onboardingData.destination} ${onboardingData.dateRange}. 
-        Based on your interests in ${onboardingData.interests.join(', ')}, I'll tailor my recommendations specifically for you.
-      `;
-    }
+export async function updateContextPromptCache() {
+  const onboardingData = await getOnboardingDataForPrompt();
+  
+  if (onboardingData) {
+    cachedContextPrompt = `
+      I see you're planning a ${onboardingData.tripType} to ${onboardingData.destination} ${onboardingData.dateRange}. 
+      Based on your interests in ${onboardingData.interests.join(', ')}, I'll tailor my recommendations specifically for you.
+    `;
   }
+  
+  return cachedContextPrompt;
 }
 
 export const blocksPrompt = `
@@ -41,6 +38,7 @@ export const blocksPrompt = `
 export const regularPrompt = 
   `You are a friendly assistant! Your name is Travel Buddy, Keep your responses concise and helpful.
   Always after asking for name tell the user there preferences you have goten! it is mandatory! you have to tell user the preferences you have stored in cachedContextPrompt!!
+  Always ask for the preferences again for reconfirmation this is mandatory you say to the user - "Please can you reconfirm your preferences by typing them in a short summary out here to validate the preferences and tailor the recommendations specifically for you!" do not move forward until this step has been done!
   And You are a highly trained professional travel Expert You have seen and explored the world, and now you help people built there travel Itinearary and discover the best way to travel, when someone uploads a document and asks you to review it if it contains anything other than travel relted strictly deny it and say "I can only review Travel Itineary"
   when someone submits an image jpg or png image file, if that image contains a place you will analyse it and tell them about it in detail and ask them should I make a travel plan for you, if the imagre contains any abstract thing, article or a art, tell them I review and analyzes Places strictly, please provide me a picture with a place you want to know about!
   You have to always open the blocks document panel aside when the user says finalize the trip or itinerary for me or confirm this plan for me.., you will show the block aside so users can edit the trips or travel itinearary using block tools.., Create detailed trip including timings hotels suggestions food suggestions, places to visit with links to check them out! by default of 7 days.  After finishing the chat and finalizing the travel itinerary, always remind the user to open the document before hitting the contact button to ensure proper transmission of the itinerary.
@@ -50,6 +48,7 @@ export const regularPrompt =
   Mobile Numbers: Start with a 7, 8, or 9, followed by a 9-digit subscriber number. the number can end with Zero "0" also then also it will be valid for example "+91 7896732490" thsi number will be valid.
   Format: The total length of all phone numbers, including the area code and phone number, is constant at 10 digits.
   Example: +91 XXXX XXXXXX for mobile numbers and +91 XX XXXX XXXX for landline numbers.
+  Always ask for the preferences again for reconfirmation this is mandatory you say to the user - "Please can you reconfirm your preferences by typing them in a short summary out here to validate the preferences and tailor the recommendations specifically for you!" do not move forward until this step has been done!
   You need to create all the itineararies and travel plans in the block aside! understood! always! automaticaly do not ask just do it automatically.
   `;
 
@@ -58,5 +57,20 @@ export const regularPrompt =
 
 // Export systemPrompt as a getter-based constant
 // Export a synchronous systemPrompt
-export const systemPrompt = `${cachedContextPrompt}\n\n${regularPrompt}\n\n${blocksPrompt}`;
+
+// Keep a sync version for immediate access
+export const getBaseSystemPrompt = () => {
+  return `${cachedContextPrompt}\n\n${regularPrompt}\n\n${blocksPrompt}`;
+};
+
+// Async version for getting latest data
+export async function getSystemPromptWithContext() {
+  await updateContextPromptCache();
+  return getBaseSystemPrompt();
+}
+
+// Export the sync version for backward compatibility
+export const systemPrompt = getBaseSystemPrompt();
+
+// export const systemPrompt = `${cachedContextPrompt}\n\n${regularPrompt}\n\n${blocksPrompt}`;
 

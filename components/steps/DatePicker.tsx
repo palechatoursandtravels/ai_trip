@@ -55,12 +55,12 @@ export default function DatePicker() {
         />
       </div>
 
-      <button
+      {/* <button
         onClick={() => setStep(2)}
         className="mt-8 text-black underline"
       >
         I don&apos;t know my dates yet
-      </button>
+      </button> */}
 
       <div className="mt-8 flex justify-between w-full max-w-xl">
         <button

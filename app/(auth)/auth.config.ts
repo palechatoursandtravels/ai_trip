@@ -14,11 +14,18 @@ export const authConfig = {
       const isLoggedIn = !!auth?.user;
       const isOnRoot = nextUrl.pathname === '/landingPage';
       const isOnChat = nextUrl.pathname.startsWith('/');
+      const isApiRequest = nextUrl.pathname.startsWith('/api/');
+
       const isOnRegister = nextUrl.pathname.startsWith('/register');
       const isOnLogin = nextUrl.pathname.startsWith('/login');
       const isOnboarding = nextUrl.pathname.startsWith('/onboarding');
       const isOnPrivacy = nextUrl.pathname === '/privacyPolicy';
       const isOnTerms = nextUrl.pathname === '/termsConditions';
+
+      // API requests should always return, never redirect
+      if (isApiRequest) {
+        return isLoggedIn;
+      }
 
       if (isOnPrivacy) return true;
       if(isOnTerms) return true;

@@ -10,7 +10,8 @@ import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
 import { customModel } from '@/lib/ai';
 import { models } from '@/lib/ai/models';
-import { systemPrompt } from '@/lib/ai/prompts';
+import { systemPrompt , getSystemPromptWithContext } from '@/lib/ai/prompts';
+
 import {
   deleteChatById,
   getChatById,
@@ -67,6 +68,9 @@ export async function POST(request: Request) {
     return new Response('Model not found', { status: 404 });
   }
 
+  // Get the latest system prompt with context
+  const currentSystemPrompt = await getSystemPromptWithContext();
+
   const coreMessages = convertToCoreMessages(messages);
   const userMessage = getMostRecentUserMessage(coreMessages);
 
@@ -91,7 +95,7 @@ export async function POST(request: Request) {
 
   const result = await streamText({
     model: customModel(model.apiIdentifier),
-    system: systemPrompt,
+    system: currentSystemPrompt,
     messages: coreMessages,
     maxSteps: 5,
     experimental_activeTools: allTools,

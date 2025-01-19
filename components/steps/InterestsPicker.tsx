@@ -5,11 +5,13 @@ import { Plus } from 'lucide-react';
 import { useOnboardingStore } from '@/app/store/onboardingStore';
 import { useRouter } from 'next/navigation';
 import { saveOnboardingData } from '@/lib/onboarding';
+import { toast } from 'sonner';
 
 export default function InterestsPicker() {
   const { updateData, setStep, data } = useOnboardingStore();
   const [customInterest, setCustomInterest] = useState('');
   const [showCustomInput, setShowCustomInput] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
 
@@ -67,10 +69,14 @@ export default function InterestsPicker() {
 
   const handleSubmit = async () => {
     if (data.interests.length > 0) {
+      setIsSubmitting(true); // Disable the button immediately on click
       try {
         // You might want to save to your backend here
         await saveOnboardingData(data); // You'll need to implement this
-        router.push('/');
+        toast.success("Great! Redirecting To your Planner!");
+        setTimeout(() => {
+          router.push("/");
+        }, 2000); // Redirect after a slight delay to allow the toast to display
       } catch (error) {
         console.error('Error saving onboarding data:', error);
       }
@@ -136,13 +142,13 @@ export default function InterestsPicker() {
           <button
             onClick={handleSubmit}
             className={`px-6 py-2 rounded-full ${
-              data.interests.length > 0
+              data.interests.length > 0 && !isSubmitting
                 ? 'bg-black text-white'
                 : 'bg-gray-200 text-gray-500'
             }`}
-            disabled={data.interests.length === 0}
+            disabled={data.interests.length === 0 || isSubmitting}
           >
-            Submit
+           {isSubmitting ? "Submitting..." : "Submit"}
           </button>
         </div>
 

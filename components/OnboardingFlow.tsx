@@ -32,6 +32,7 @@ const OnboardingFlow = () => {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="text-center mb-4 font-medium">Onboarding Step {step}</div>
         <div className="w-full h-2 bg-gray-200 rounded-full mb-8">
           <div 
             className="h-full bg-black rounded-full transition-all duration-300"
@@ -39,7 +40,7 @@ const OnboardingFlow = () => {
           />
         </div>
         
-        <div>Onboarding Step {step}</div>
+       
         {/* Add your step components here */}
         {step === 1 && <DestinationPicker />}
         {step === 2 && <DatePicker />}
