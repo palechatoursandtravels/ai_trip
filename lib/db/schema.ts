@@ -107,3 +107,20 @@ export const suggestion = pgTable(
 );
 
 export type Suggestion = InferSelectModel<typeof suggestion>;
+
+//Onboarding flow user preferences.
+// Add this to schema.ts after the suggestion table
+export const onboarding = pgTable('Onboarding', {
+  id: uuid('id').primaryKey().notNull().defaultRandom(),
+  userId: uuid('userId')
+    .notNull()
+    .references(() => user.id),
+  destination: json('destination').notNull(),
+  dateRange: json('dateRange').notNull(),
+  tripType: json('tripType').notNull(),
+  interests: json('interests').notNull(),
+  createdAt: timestamp('createdAt').notNull(),
+  updatedAt: timestamp('updatedAt').notNull(),
+});
+
+export type Onboarding = InferSelectModel<typeof onboarding>;

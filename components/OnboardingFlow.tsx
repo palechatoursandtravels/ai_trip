@@ -1,15 +1,33 @@
 'use client';
 
 import { useOnboardingStore } from '@/app/store/onboardingStore';
+import { saveOnboardingData } from '@/lib/onboarding';
 import DestinationPicker from './steps/DestinationPicker';
 import DatePicker from './steps/DatePicker';
 import TripTypePicker from './steps/TripTypePicker';
 import InterestsPicker from './steps/InterestsPicker';
+import { useCallback, useEffect } from 'react';
 
 const OnboardingFlow = () => {
   const { step, data } = useOnboardingStore();
 
-  
+  const handleCompletion = useCallback(async () => {
+    if (step === 4) {
+      try {
+        await saveOnboardingData(data);
+        // Handle successful save - maybe redirect or show success message
+      } catch (error) {
+        console.error('Failed to save onboarding data:', error);
+        // Handle error - show error message
+      }
+    }
+  }, [step, data]);
+
+  useEffect(() => {
+    if (step === 4) {
+      handleCompletion();
+    }
+  }, [step, handleCompletion]);
 
   return (
     <div className="min-h-screen bg-white">

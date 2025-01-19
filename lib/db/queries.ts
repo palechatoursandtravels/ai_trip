@@ -15,7 +15,9 @@ import {
   type Message,
   message,
   vote,
+  onboarding,
 } from './schema';
+import { OnboardingData } from '../onboarding';
 
 // Optionally, if not using email/pass login, you can
 // use the Drizzle adapter for Auth.js / NextAuth
@@ -277,6 +279,69 @@ export async function getSuggestionsByDocumentId({
     console.error(
       'Failed to get suggestions by document version from database',
     );
+    throw error;
+  }
+}
+
+
+//Onboarding DATA CRUD APPLICATIONS:
+
+export async function saveOnboardingData({
+  userId,
+  data,
+}: {
+  userId: string;
+  data: OnboardingData;
+}) {
+  try {
+    const now = new Date();
+    return await db.insert(onboarding).values({
+      userId,
+      destination: data.destination,
+      dateRange: data.dateRange,
+      tripType: data.tripType,
+      interests: data.interests,
+      createdAt: now,
+      updatedAt: now,
+    });
+  } catch (error) {
+    console.error('Failed to save onboarding data in database');
+    throw error;
+  }
+}
+
+export async function getOnboardingDataByUserId({ userId }: { userId: string }) {
+  try {
+    const [data] = await db
+      .select()
+      .from(onboarding)
+      .where(eq(onboarding.userId, userId))
+      .orderBy(desc(onboarding.updatedAt))
+      .limit(1);
+    return data;
+  } catch (error) {
+    console.error('Failed to get onboarding data from database');
+    throw error;
+  }
+}
+
+export async function updateOnboardingData({
+  userId,
+  data,
+}: {
+  userId: string;
+  data: Partial<OnboardingData>;
+}) {
+  try {
+    return await db
+      .update(onboarding)
+      .set({
+        ...data,
+        updatedAt: new Date(),
+      })
+      .where(eq(onboarding.userId, userId));
+  } catch (error) {
+    console.error('Failed to update onboarding data in database');
     throw error;
   }
 }

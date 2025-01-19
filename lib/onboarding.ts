@@ -1,3 +1,5 @@
+
+
 // types.ts
 export interface OnboardingData {
     destination: {
@@ -32,6 +34,19 @@ export interface OnboardingData {
         // Set cookie with same structure
         const encodedData = encodeURIComponent(JSON.stringify(zustandData));
         document.cookie = `onboarding-storage=${encodedData}; path=/; max-age=86400`;
+
+        const response = await fetch('/api/onboarding', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ onboardingData: data }),
+        });
+  
+        if (!response.ok) {
+          throw new Error('Failed to save onboarding data');
+        }
+
       }
       
       return true;
