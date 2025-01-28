@@ -9,7 +9,7 @@ interface FormattedOnboardingData {
   }
   
   export async function getOnboardingDataForPrompt(): Promise<FormattedOnboardingData | null> {
-    // First try localStorage for client-side
+    // Try to get from localStorage first
     if (typeof window !== 'undefined') {
       try {
         const storedData = window.localStorage.getItem('onboarding-storage');
@@ -26,13 +26,10 @@ interface FormattedOnboardingData {
       }
     }
     
-    // If not found in localStorage, fetch from API
+    // Fallback to API
     try {
       const dbData = await fetchOnboardingData();
-      if (!dbData || (dbData as any).error === 'Unauthorized') {
-        return null;
-      }
-      if (dbData) {
+      if (dbData && !(dbData as any).error) {
         return formatOnboardingData(dbData);
       }
     } catch (error) {
@@ -43,14 +40,21 @@ interface FormattedOnboardingData {
   }
   
   function formatOnboardingData(data: any): FormattedOnboardingData {
+    const formatDate = (date: string | null) => {
+      if (!date) return '';
+      try {
+        return new Date(date).toLocaleDateString();
+      } catch {
+        return '';
+      }
+    };
+  
     return {
-      destination: data.destination.name,
-      dateRange: data.dateRange.startDate && data.dateRange.endDate ? 
-        `from ${new Date(data.dateRange.startDate).toLocaleDateString()} to ${new Date(data.dateRange.endDate).toLocaleDateString()}` : 
-        'dates not specified',
+      destination: data.destination.name || 'Not specified',
+      dateRange: data.dateRange.startDate && data.dateRange.endDate
+        ? `from ${formatDate(data.dateRange.startDate)} to ${formatDate(data.dateRange.endDate)}`
+        : 'dates not specified',
       tripType: `${data.tripType.type}${data.tripType.withPets ? ' with pets' : ''}`,
-      interests: data.interests
+      interests: Array.isArray(data.interests) ? data.interests : []
     };
   }
-  
-  

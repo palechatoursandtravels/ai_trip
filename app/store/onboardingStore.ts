@@ -27,12 +27,12 @@ const initialData: OnboardingData = {
 };
 
 
-const syncToCookie = (state: any) => {
-  if (typeof window !== 'undefined') {
-    const value = encodeURIComponent(JSON.stringify(state));
-    document.cookie = `onboarding-storage=${value}; path=/; max-age=86400`; // 24 hours
-  }
-};
+// const syncToCookie = (state: any) => {
+//   if (typeof window !== 'undefined') {
+//     const value = encodeURIComponent(JSON.stringify(state));
+//     document.cookie = `onboarding-storage=${value}; path=/; max-age=86400`; // 24 hours
+//   }
+// };
 
 export const useOnboardingStore = create<OnboardingStore>()(
   persist(
@@ -41,23 +41,29 @@ export const useOnboardingStore = create<OnboardingStore>()(
       data: initialData,
       setStep: (step) => set({ step }),
       updateData: (newData) => 
-        set((state) => {
-          const updatedState = { 
-            data: { ...state.data, ...newData }
-          };
-          syncToCookie({ state: updatedState }); // Sync to cookie when data updates
-          return updatedState;
-        }),
-      resetData: () => {
-        if (typeof window !== 'undefined') {
-          document.cookie = 'onboarding-storage=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT';
-        }
-        return set({ data: initialData, step: 1 });
-      },
+        set((state) => ({
+          data: { ...state.data, ...newData }
+        })),
+      resetData: () => set({ data: initialData, step: 1 }),
     }),
     {
       name: 'onboarding-storage',
-      skipHydration: false
+      skipHydration: false,
+      storage: {
+        getItem: (name) => {
+          if (typeof window === 'undefined') return null;
+          const item = localStorage.getItem(name);
+          return item ? JSON.parse(item) : null;
+        },
+        setItem: (name, value) => {
+          if (typeof window === 'undefined') return;
+          localStorage.setItem(name, JSON.stringify(value));
+        },
+        removeItem: (name) => {
+          if (typeof window === 'undefined') return;
+          localStorage.removeItem(name);
+        },
+      },
     }
   )
 );

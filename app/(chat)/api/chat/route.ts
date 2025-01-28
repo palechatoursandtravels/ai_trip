@@ -10,7 +10,7 @@ import { z } from 'zod';
 import { auth } from '@/app/(auth)/auth';
 import { customModel } from '@/lib/ai';
 import { models } from '@/lib/ai/models';
-import { systemPrompt , getSystemPromptWithContext } from '@/lib/ai/prompts';
+import {  getSystemPrompt } from '@/lib/ai/prompts';
 
 import {
   deleteChatById,
@@ -69,8 +69,7 @@ export async function POST(request: Request) {
   }
 
   // Get the latest system prompt with context
-  const currentSystemPrompt = await getSystemPromptWithContext();
-
+  const currentSystemPrompt = await getSystemPrompt();
   const coreMessages = convertToCoreMessages(messages);
   const userMessage = getMostRecentUserMessage(coreMessages);
 

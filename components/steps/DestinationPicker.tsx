@@ -4,6 +4,8 @@ import usePlacesAutocomplete, {
   getDetails
 } from "use-places-autocomplete";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
+import { X } from "lucide-react";
 
 export default function DestinationPicker() {
   const { updateData, setStep } = useOnboardingStore();
@@ -42,6 +44,13 @@ export default function DestinationPicker() {
 
   return (
     <div className="flex flex-col items-center">
+      <Link 
+        href="/" 
+        className="absolute top-0 right-4 p-2 hover:bg-gray-100 rounded-full transition-colors"
+        aria-label="Skip to chat"
+      >
+        <X className="size-6 text-gray-500" />
+      </Link>
       <h1 className="text-4xl font-bold mb-4">
         First, where do you want to go?
       </h1>

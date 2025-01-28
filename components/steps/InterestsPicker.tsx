@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { useOnboardingStore } from '@/app/store/onboardingStore';
 import { useRouter } from 'next/navigation';
-import { saveOnboardingData } from '@/lib/onboarding';
+import { OnboardingData, saveOnboardingData } from '@/lib/onboarding';
 import { toast } from 'sonner';
 
 export default function InterestsPicker() {
@@ -67,21 +67,41 @@ export default function InterestsPicker() {
     setShowCustomInput(false);
   };
 
+  const isDataComplete = (data: OnboardingData) => {
+    return data.destination.name &&
+      data.destination.placeId &&
+      data.dateRange.startDate &&
+      data.dateRange.endDate &&
+      data.tripType.type &&
+      data.interests.length > 0;
+  };
+
   const handleSubmit = async () => {
-    if (data.interests.length > 0) {
-      setIsSubmitting(true); // Disable the button immediately on click
+    if (data.interests.length > 0 && !isSubmitting) {
+      setIsSubmitting(true);
       try {
-        // You might want to save to your backend here
-        await saveOnboardingData(data); // You'll need to implement this
+        // Ensure all required data is present
+        if (!isDataComplete(data)) {
+          toast.error("Please complete all required information");
+          return;
+        }
+        
+        await saveOnboardingData(data);
         toast.success("Great! Redirecting To your Planner!");
         setTimeout(() => {
           router.push("/");
-        }, 2000); // Redirect after a slight delay to allow the toast to display
+        }, 2000);
       } catch (error) {
         console.error('Error saving onboarding data:', error);
+        toast.error("Something went wrong. Please try again.");
+      } finally {
+        setIsSubmitting(false);
       }
     }
   };
+  
+  // Helper function for the component
+
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
