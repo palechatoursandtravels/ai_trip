@@ -8,7 +8,9 @@ import FAQ from "@/components/FrequentlyAnswer";
 import Gradient from "@/components/Gradient";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import NavBar from "@/components/NavBar";
+import PeoplesChoices from "@/components/PeopleChoices";
 import TypingEffect from "@/components/TypingEffect";
+import { locations } from "@/lib/locations";
 import Link from "next/link";
 
 
@@ -139,6 +141,7 @@ export default function LandingPage() {
           </li>
         </ol>
       </div>
+      <PeoplesChoices locations={locations}/>
       <FAQ/>
       <ContactUs/>
       <Footer/>
