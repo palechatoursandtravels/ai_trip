@@ -15,11 +15,13 @@ export default async function Page() {
     DEFAULT_MODEL_NAME;
 
   return (
-    <Chat
-      key={id}
-      id={id}
-      initialMessages={[]}
-      selectedModelId={selectedModelId}
-    />
+    <div className="size-full flex flex-col">
+      <Chat
+        key={id}
+        id={id}
+        initialMessages={[]}
+        selectedModelId={selectedModelId}
+      />
+    </div>
   );
 }

@@ -37,10 +37,14 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
     DEFAULT_MODEL_NAME;
 
   return (
-    <PreviewChat
-      id={chat.id}
-      initialMessages={convertToUIMessages(messagesFromDb)}
-      selectedModelId={selectedModelId}
-    />
+    <div className="size-full flex flex-col overflow-hidden">
+    <div className="flex-1 w-full relative">
+      <PreviewChat
+        id={chat.id}
+        initialMessages={convertToUIMessages(messagesFromDb)}
+        selectedModelId={selectedModelId}
+      />
+    </div>
+  </div>
   );
 }

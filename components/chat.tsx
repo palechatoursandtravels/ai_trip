@@ -95,7 +95,7 @@ export function Chat({
         <ChatHeader selectedModelId={selectedModelId} lastAIMessage={lastAIMessage} block={block} />
         <div
           ref={messagesContainerRef}
-          className="flex flex-col min-w-0 gap-6 flex-1 overflow-y-scroll pt-4"
+          className="flex flex-col min-w-0 gap-4 md:gap-6 flex-1 overflow-y-scroll pt-2 md:pt-4 px-2 md:px-4"
         >
           {messages.length === 0 && <Overview />}
 
@@ -107,11 +107,7 @@ export function Chat({
               block={block}
               setBlock={setBlock}
               isLoading={isLoading && messages.length - 1 === index}
-              vote={
-                votes
-                  ? votes.find((vote) => vote.messageId === message.id)
-                  : undefined
-              }
+              vote={votes?.find((vote) => vote.messageId === message.id)}
             />
           ))}
 
@@ -123,10 +119,10 @@ export function Chat({
 
           <div
             ref={messagesEndRef}
-            className="shrink-0 min-w-[24px] min-h-[24px]"
+            className="shrink-0 min-w-[16px] md:min-w-[24px] min-h-[16px] md:min-h-[24px]"
           />
         </div>
-        <form className="flex mx-auto px-4 bg-background pb-4 md:pb-6 gap-2 w-full md:max-w-3xl">
+        <form className="flex mx-auto px-2 md:px-4 bg-background pb-2 md:pb-6 gap-2 w-full max-w-full md:max-w-3xl">
           <MultimodalInput
             chatId={id}
             input={input}
@@ -139,6 +135,7 @@ export function Chat({
             messages={messages}
             setMessages={setMessages}
             append={append}
+            className="w-full"
           />
         </form>
       </div>

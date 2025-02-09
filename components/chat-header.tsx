@@ -156,50 +156,61 @@ export function ChatHeader({
 
   return (
     <>
-      <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-2 gap-2">
-        <SidebarToggle />
-        {(!open || windowWidth < 768) && (
-          <BetterTooltip content="New Chat">
-            <Button
-              variant="outline"
-              className="order-2 md:order-1 md:px-2 px-2 md:h-fit ml-auto md:ml-0"
-              onClick={() => {
-                router.push('/');
-                router.refresh();
-              }}
-            >
-              <PlusIcon />
-              <span className="md:sr-only">New Chat</span>
-            </Button>
-          </BetterTooltip>
-        )}
+      <header className="flex sticky top-0 bg-background py-1.5 items-center px-2 md:px-4 gap-2 flex-wrap md:flex-nowrap">
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <SidebarToggle />
+          {(!open || windowWidth < 768) && (
+            <BetterTooltip content="New Chat">
+              <Button
+                variant="outline"
+                className="order-2 md:order-1 h-9 md:h-10 px-2 md:px-3 ml-auto md:ml-0"
+                onClick={() => {
+                  router.push('/');
+                  router.refresh();
+                }}
+              >
+                <PlusIcon />
+                <span className="md:sr-only">New Chat</span>
+              </Button>
+            </BetterTooltip>
+          )}
+        </div>
+        
         <Button
-          className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 text-zinc-50 dark:text-zinc-900 hidden md:flex py-3 px-6 h-12 text-lg font-medium order-4 md:ml-auto rounded-lg transition-all duration-200 hover:scale-105"
+          className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 
+                     text-zinc-50 dark:text-zinc-900 w-full md:w-auto md:ml-auto
+                     py-2 md:py-3 px-4 md:px-6 h-10 md:h-12 text-base md:text-lg font-medium 
+                     rounded-lg transition-all duration-200 hover:scale-105 
+                     flex items-center justify-center gap-2 md:gap-3
+                     order-last md:order-none mt-2 md:mt-0"
           onClick={() => setTabsOpen(true)}
         >
-          <Contact2 size={24} className="mr-3" />
-          Contact Expert
+          <Contact2 size={20} className="md:size-24" />
+          <span>Contact Expert</span>
         </Button>
       </header>
 
       <Dialog open={tabsOpen} onOpenChange={setTabsOpen}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="w-[95vw] max-w-[425px] p-4 md:p-6">
           <DialogHeader>
-            <DialogTitle>Choose an Option</DialogTitle>
+            <DialogTitle className="text-lg md:text-xl">Choose an Option</DialogTitle>
           </DialogHeader>
           <Tabs defaultValue="changes" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="changes">Make Changes</TabsTrigger>
-              <TabsTrigger value="contact">Contact Now</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 gap-2">
+              <TabsTrigger value="changes" className="px-2 py-1.5 md:px-4 md:py-2">
+                Make Changes
+              </TabsTrigger>
+              <TabsTrigger value="contact" className="px-2 py-1.5 md:px-4 md:py-2">
+                Contact Now
+              </TabsTrigger>
             </TabsList>
             <TabsContent value="changes">
-              <div className="space-y-4 p-4">
-                <p>Would you like to make any changes to your current plan?</p>
+              <div className="space-y-3 md:space-y-4 p-2 md:p-4">
+                <p className="text-sm md:text-base">Would you like to make any changes to your current plan?</p>
                 <Button 
-                  className="w-full"
+                  className="w-full h-9 md:h-10"
                   onClick={() => {
                     setTabsOpen(false);
-                    // Add logic for handling changes
                   }}
                 >
                   Review Changes
@@ -207,9 +218,9 @@ export function ChatHeader({
               </div>
             </TabsContent>
             <TabsContent value="contact">
-              <div className="space-y-4 p-4">
+              <div className="space-y-3 md:space-y-4 p-2 md:p-4">
                 <Button 
-                  className="w-full bg-teal-500 hover:bg-teal-600"
+                  className="w-full h-9 md:h-10 bg-teal-500 hover:bg-teal-600"
                   onClick={() => {
                     setTabsOpen(false);
                     setDialogOpen(true);
@@ -224,29 +235,34 @@ export function ChatHeader({
       </Dialog>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
+        <DialogContent className="w-[95vw] max-w-[425px] p-4 md:p-6">
           <DialogHeader>
-            <DialogTitle>Contact Expert</DialogTitle>
+            <DialogTitle className="text-lg md:text-xl">Contact Expert</DialogTitle>
           </DialogHeader>
-          <div className="space-y-4">
+          <div className="space-y-3 md:space-y-4">
             <Input
               placeholder="Your Name"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               required
+              className="h-9 md:h-10"
             />
             <Input
               placeholder="Your Phone Number"
               value={phoneNumber}
               onChange={(e) => setPhoneNumber(e.target.value)}
-              className={!validatePhoneNumber(phoneNumber) && phoneNumber ? 'border-red-500' : ''}
+              className={`h-9 md:h-10 ${!validatePhoneNumber(phoneNumber) && phoneNumber ? 'border-red-500' : ''}`}
             />
             {!validatePhoneNumber(phoneNumber) && phoneNumber && (
-              <p className="text-red-500 text-sm">Enter a valid phone number</p>
+              <p className="text-red-500 text-xs md:text-sm">Enter a valid phone number</p>
             )}
           </div>
-          <DialogFooter>
-            <Button className="bg-teal-500" onClick={handleContactExpert} disabled={isSubmitting}>
+          <DialogFooter className="mt-4 md:mt-6">
+            <Button 
+              className="w-full md:w-auto bg-teal-500 h-9 md:h-10" 
+              onClick={handleContactExpert} 
+              disabled={isSubmitting}
+            >
               {isSubmitting ? 'Submitting...' : 'Submit'}
             </Button>
           </DialogFooter>

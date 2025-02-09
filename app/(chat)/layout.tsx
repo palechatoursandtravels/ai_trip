@@ -17,8 +17,14 @@ export default async function Layout({
 
   return (
     <SidebarProvider defaultOpen={!isCollapsed}>
-      <AppSidebar user={session?.user} />
-      <SidebarInset>{children}</SidebarInset>
+      <div className="flex h-dvh w-full overflow-hidden">
+        <AppSidebar user={session?.user} />
+        <SidebarInset className="flex-1 w-full overflow-hidden">
+          <main className="size-full relative">
+            {children}
+          </main>
+        </SidebarInset>
+      </div>
     </SidebarProvider>
   );
 }
