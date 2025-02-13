@@ -1,35 +1,38 @@
 // chat-header.tsx
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useWindowSize } from 'usehooks-ts';
 import { useState, useEffect } from 'react';
 import emailjs from '@emailjs/browser';
 
-import { ModelSelector } from '@/components/model-selector';
+// import { ModelSelector } from '@/components/model-selector';
 import { SidebarToggle } from '@/components/sidebar-toggle';
 import { Button } from '@/components/ui/button';
 import { BetterTooltip } from '@/components/ui/tooltip';
 import { PlusIcon } from './icons';
 import { useSidebar } from './ui/sidebar';
-import { Contact2, FileText } from 'lucide-react';
+import { Contact2, HelpCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { getCurrentUserEmail } from '@/lib/db/actions';
 import { UIBlock } from './block'; // Import UIBlock type
 import { Input } from './ui/input';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
+import { ChatTour } from './ChatTour';
 
 export function ChatHeader({ 
   selectedModelId, 
   lastAIMessage,
   block, // Add block to props
   userEmail,
+  onStartTour,
   
 }: { 
   selectedModelId: string, 
   lastAIMessage?: string,
   block?: UIBlock, // Make block optional
   userEmail?: string 
+  onStartTour: () => void,
 }) {
   const router = useRouter();
   const { open } = useSidebar();
@@ -41,6 +44,9 @@ export function ChatHeader({
 
   const { width: windowWidth } = useWindowSize();
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Add these state variables
+  const [showTour, setShowTour] = useState(false);
 
   // Fetch user email on component mount if not already provided
   useEffect(() => {
@@ -175,6 +181,16 @@ export function ChatHeader({
             </BetterTooltip>
           )}
         </div>
+
+        {/* <Button
+        className="tour-btn h-10 md:h-12 px-3 ml-2"
+        variant="outline"
+        onClick={onStartTour}
+      >
+        <HelpCircle className="size-5" />
+      </Button> */}
+
+
         
         <Button
           className="bg-zinc-900 dark:bg-zinc-100 hover:bg-zinc-800 dark:hover:bg-zinc-200 
@@ -182,13 +198,25 @@ export function ChatHeader({
                      py-2 md:py-3 px-4 md:px-6 h-10 md:h-12 text-base md:text-lg font-medium 
                      rounded-lg transition-all duration-200 hover:scale-105 
                      flex items-center justify-center gap-2 md:gap-3
-                     order-last md:order-none mt-2 md:mt-0"
+                     order-last md:order-none mt-2 md:mt-0 Contact"
           onClick={() => setTabsOpen(true)}
         >
           <Contact2 size={20} className="md:size-24" />
           <span>Contact Expert</span>
         </Button>
+            <Button 
+            className="tour-btn"
+            variant="outline"
+            onClick={() => {
+              setDialogOpen(false);
+              onStartTour();
+            }}
+          >
+            <HelpCircle className="size-5" />
+          </Button>
       </header>
+
+     
 
       <Dialog open={tabsOpen} onOpenChange={setTabsOpen}>
         <DialogContent className="w-[95vw] max-w-[425px] p-4 md:p-6">

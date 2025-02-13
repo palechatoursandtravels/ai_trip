@@ -3,7 +3,7 @@
 import type { Attachment, Message } from 'ai';
 import { useChat } from 'ai/react';
 import { AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { useLocalStorage, useWindowSize } from 'usehooks-ts';
 
@@ -18,6 +18,7 @@ import { BlockStreamHandler } from './block-stream-handler';
 import { MultimodalInput } from './multimodal-input';
 import { Overview } from './overview';
 import { Guide } from './guide';
+import { ChatTour } from './ChatTour';
 
 export function Chat({
   id,
@@ -29,6 +30,18 @@ export function Chat({
   selectedModelId: string;
 }) {
   const { mutate } = useSWRConfig();
+
+  const [tourOpen, setTourOpen] = useState(false);
+
+  const startTour = useCallback(() => {
+    console.log('Starting tour');  // Debug log
+    setTourOpen(true);
+  }, []);
+
+  const closeTour = useCallback(() => {
+    console.log('Closing tour');  // Debug log
+    setTourOpen(false);
+  }, []);
 
   const {
     messages,
@@ -89,10 +102,11 @@ export function Chat({
 
 
 
+
   return (
     <>
       <div className="flex flex-col min-w-0 h-dvh bg-background">
-        <ChatHeader selectedModelId={selectedModelId} lastAIMessage={lastAIMessage} block={block} />
+        <ChatHeader selectedModelId={selectedModelId} lastAIMessage={lastAIMessage} block={block} onStartTour={startTour}/>
         <div
           ref={messagesContainerRef}
           className="flex flex-col min-w-0 gap-4 md:gap-6 flex-1 overflow-y-scroll pt-2 md:pt-4 px-2 md:px-4"
@@ -138,7 +152,13 @@ export function Chat({
             className="w-full"
           />
         </form>
+      <ChatTour 
+        isOpen={tourOpen}
+        onClose={closeTour}
+        onStart={startTour}
+      />
       </div>
+
 
       <Guide isOpen={showGuide} onClose={handleGuideClose} />
 
