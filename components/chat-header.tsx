@@ -18,7 +18,6 @@ import { UIBlock } from './block'; // Import UIBlock type
 import { Input } from './ui/input';
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from './ui/dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from './ui/tabs';
-import { ChatTour } from './ChatTour';
 
 export function ChatHeader({ 
   selectedModelId, 

@@ -3,7 +3,7 @@
 import type { Attachment, Message } from 'ai';
 import { useChat } from 'ai/react';
 import { AnimatePresence } from 'framer-motion';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useSWR, { useSWRConfig } from 'swr';
 import { useLocalStorage, useWindowSize } from 'usehooks-ts';
 
@@ -31,7 +31,18 @@ export function Chat({
 }) {
   const { mutate } = useSWRConfig();
 
+  const [hasSeenTour, setHasSeenTour] = useLocalStorage('hasSeenTour', false);
   const [tourOpen, setTourOpen] = useState(false);
+
+
+  // Effect to auto-start tour on first visit
+  useEffect(() => {
+    if (!hasSeenTour) {
+      setTourOpen(true);
+      setHasSeenTour(true);
+    }
+  }, [hasSeenTour, setHasSeenTour]);
+
 
   const startTour = useCallback(() => {
     console.log('Starting tour');  // Debug log
